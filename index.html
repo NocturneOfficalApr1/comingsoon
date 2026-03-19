@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coming Soon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background:#000;
+      color:#fff;
+      font-family:'Orbitron', sans-serif;
+      overflow-x:hidden;
+      position:relative;
+      min-height:100vh;
+    }
+    canvas#bg {
+      position:fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      pointer-events:none;
+      z-index:1;
+    }
+    main { position:relative; z-index:2; }
+
+    .countdown {
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding:20px;
+    }
+    .timer-box {
+      background:#fff;
+      color:#000;
+      font-size:5rem;
+      font-weight:900;
+      padding:0.5em 1em;
+      border-radius:16px;
+      box-shadow:0 0 60px rgba(255,255,255,0.4);
+      letter-spacing:0.1em;
+      margin-bottom:1.5rem;
+    }
+    #timer {
+      font-size:4.2rem;
+      display:flex;
+      justify-content:center;
+      align-items:baseline;
+      gap:2rem;
+      flex-wrap:nowrap;
+      margin:1.5rem 0;
+    }
+    #timer span.num {
+      background:#fff;
+      color:#000;
+      padding:0.4em 0.8em;
+      border-radius:12px;
+      min-width:110px;
+      box-shadow:0 0 30px rgba(255,255,255,0.5);
+      font-weight:900;
+      text-align:center;
+    }
+    #timer span.unit {
+      font-size:3.2rem;
+      color:#ccc;
+      font-weight:700;
+      margin-left:0.4em;
+    }
+    .coming {
+      font-size:3.5rem;
+      letter-spacing:0.4em;
+      opacity:0.9;
+      color:#ddd;
+    }
+
+    .silhouettes {
+      padding:60px 5%;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:40px;
+    }
+    .silhouette {
+      width:100%;
+      max-width:420px;
+      aspect-ratio:3/5;
+      background-size:contain;
+      background-repeat:no-repeat;
+      background-position:center bottom;
+      filter:drop-shadow(0 0 20px rgba(255,255,255,0.3));
+      position:relative;
+    }
+    .silhouette::after {
+      content:'';
+      position:absolute;
+      bottom:-40px; left:50%;
+      width:80px; height:2px;
+      background:#fff;
+      transform:translateX(-50%);
+      opacity:0.6;
+    }
+    .silhouette:last-child::after { display:none; }
+
+    .s1 { background-image:url('https://i.imgur.com/69O6Wl8.png'); }
+    .s2 { background-image:url('https://i.imgur.com/q0ACMUn.jpeg'); }
+    .s3 { background-image:url('https://i.imgur.com/F3dMrKD.jpeg'); }
+    .s4 { background-image:url('https://i.imgur.com/ywTPgIi.jpeg'); }
+    .s5 { background-image:url('https://i.imgur.com/PlOzBF0.jpeg'); }
+
+    /* 電腦版斜線切割 */
+    @media (min-width:901px) {
+      .silhouettes {
+        padding:80px 5%;
+        gap:0;
+        flex-wrap:nowrap;
+      }
+      .silhouette {
+        flex:1;
+        aspect-ratio:3/5;
+        clip-path:polygon(0 0, 100% 0, 80% 100%, 20% 100%);
+        max-width:none;
+      }
+      .silhouette:not(:last-child)::after {
+        content:'';
+        position:absolute;
+        top:0; right:-2px;
+        width:4px; height:100%;
+        background:#fff;
+        transform:skewX(-15deg);
+        z-index:3;
+      }
+      .silhouette::after { display:none; }
+    }
+
+    /* 手機版優化 */
+    @media (max-width:900px) {
+      .timer-box { font-size:3.2rem; padding:0.4em 0.8em; }
+      #timer { font-size:2.8rem; gap:1.2rem; }
+      #timer span.num { min-width:80px; padding:0.3em 0.6em; }
+      #timer span.unit { font-size:2.2rem; }
+      .coming { font-size:2.5rem; letter-spacing:0.2em; }
+      .silhouettes { padding:40px 10%; gap:80px; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<main>
+  <section class="countdown">
+    <div class="timer-box">
+      <div id="timer"></div>
+    </div>
+    <div class="coming">COMING SOON</div>
+  </section>
+
+  <section class="silhouettes">
+    <div class="silhouette s1"></div>
+    <div class="silhouette s2"></div>
+    <div class="silhouette s3"></div>
+    <div class="silhouette s4"></div>
+    <div class="silhouette s5"></div>
+  </section>
+</main>
+
+<script>
+const target = new Date("2026-04-01T20:00:00+08:00").getTime();
+
+function updateTimer() {
+  const dist = target - Date.now();
+  let html = '';
+  if (dist <= 0) {
+    html = `
+      <span class="num">00</span><span class="unit">D</span>
+      <span class="num">00</span><span class="unit">H</span>
+      <span class="num">00</span><span class="unit">M</span>
+      <span class="num">00</span><span class="unit">S</span>
+    `;
+  } else {
+    const d = Math.floor(dist / 86400000).toString().padStart(2, '0');
+    const h = Math.floor((dist % 86400000) / 3600000).toString().padStart(2, '0');
+    const m = Math.floor((dist % 3600000) / 60000).toString().padStart(2, '0');
+    const s = Math.floor((dist % 60000) / 1000).toString().padStart(2, '0');
+    html = `
+      <span class="num">${d}</span><span class="unit">D</span>
+      <span class="num">${h}</span><span class="unit">H</span>
+      <span class="num">${m}</span><span class="unit">M</span>
+      <span class="num">${s}</span><span class="unit">S</span>
+    `;
+  }
+  document.getElementById("timer").innerHTML = html;
+}
+setInterval(updateTimer, 1000);
+updateTimer();
+
+// 粒子
+const c = document.getElementById('bg');
+const ctx = c.getContext('2d');
+c.width = window.innerWidth;
+c.height = window.innerHeight;
+
+window.addEventListener('resize', () => {
+  c.width = window.innerWidth;
+  c.height = window.innerHeight;
+});
+
+const stars = [];
+for (let i = 0; i < 60; i++) {
+  stars.push({
+    x: Math.random() * c.width,
+    y: Math.random() * c.height * 2 - c.height,
+    size: Math.random() * 1.5 + 0.5,
+    speed: Math.random() * 0.5 + 0.2,
+    opacity: Math.random() * 0.4 + 0.1
+  });
+}
+
+function draw() {
+  ctx.clearRect(0, 0, c.width, c.height);
+  stars.forEach(s => {
+    ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+    ctx.fill();
+    s.y += s.speed;
+    if (s.y > c.height) {
+      s.y = -20;
+      s.x = Math.random() * c.width;
+    }
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
