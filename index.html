@@ -186,12 +186,12 @@
     .silhouette::after { display:none; }
   }
 
-  /* 手機版：恢復較大白框 + 調整對齊（D/M 靠左一點，H/S 有空間） */
+  /* 手機版：數字整體縮小 + 單位更貼近 + 固定寬度（解決秒數跳動問題） */
   @media (max-width:900px) {
     .timer-box {
       padding: 1.25rem 1.6rem;
       border-radius: 18px;
-      max-width: 380px;      /* 恢復原本較大的白框 */
+      max-width: 380px;
       width: 92vw;
     }
     #timer {
@@ -200,23 +200,24 @@
     }
     .timer-row {
       display: flex;
-      justify-content: space-around;   /* 讓兩組左右平衡 */
+      justify-content: center;
       align-items: baseline;
       gap: 2.2rem;
     }
     .timer-row > span {
       display: inline-flex;
       align-items: baseline;
-      gap: 0.5rem;   /* 數字與單位緊密黏在一起 */
+      gap: 0.35rem;   /* 單位更貼近數字 */
     }
     #timer span.num {
-      padding: 0.45em 0.75em;
-      min-width: 78px;
-      font-size: clamp(2.45rem, 8.2vw, 3.1rem);
-      border-radius: 11px;
+      padding: 0.4em 0.7em;
+      min-width: 88px;          /* 固定寬度，秒數變化時不再跳動 */
+      font-size: clamp(2.3rem, 7.6vw, 2.85rem); /* 數字整體再縮小 */
+      border-radius: 10px;
+      text-align: center;
     }
     #timer span.unit {
-      font-size: clamp(1.45rem, 5vw, 2.1rem);
+      font-size: clamp(1.35rem, 4.8vw, 2rem);
       color: #444;
       font-weight: 700;
     }
