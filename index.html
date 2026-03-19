@@ -7,233 +7,238 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      background:#000;
-      color:#fff;
-      font-family:'Orbitron', sans-serif;
-      overflow-x:hidden;
-      position:relative;
-      min-height:100vh;
-    }
-    canvas#bg {
-      position:fixed;
-      top:0; left:0;
-      width:100%; height:100%;
-      pointer-events:none;
-      z-index:1;
-    }
-    main { position:relative; z-index:2; }
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background:#000;
+    color:#fff;
+    font-family:'Orbitron', sans-serif;
+    overflow-x:hidden;
+    position:relative;
+    min-height:100vh;
+  }
+  canvas#bg {
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    pointer-events:none;
+    z-index:1;
+  }
+  main { position:relative; z-index:2; }
 
-    .countdown {
-      height:100vh;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-      padding:20px;
-    }
-    .timer-box {
-      background:#fff;
-      color:#000;
-      font-size:5rem;
-      font-weight:900;
-      padding:0.5em 1em;
-      border-radius:16px;
-      box-shadow:0 0 60px rgba(255,255,255,0.4);
-      letter-spacing:0.1em;
-      margin-bottom:1.5rem;
-    }
-    #timer {
-      display:flex;
-      justify-content:center;
-      align-items:baseline;
-      gap:2rem;
-      flex-wrap:nowrap;
-      margin:1.5rem 0;
-    }
-    #timer span.num {
-      background:#fff;
-      color:#000;
-      padding:0.4em 0.8em;
-      border-radius:12px;
-      min-width:110px;
-      box-shadow:0 0 30px rgba(255,255,255,0.5);
-      font-weight:900;
-      text-align:center;
-    }
-    #timer span.unit {
-      font-size:3.2rem;
-      color:#ccc;
-      font-weight:700;
-      margin-left:0.4em;
-    }
-    .coming {
-      font-size:3.5rem;
-      letter-spacing:0.4em;
-      opacity:0.9;
-      color:#ddd;
-    }
+  .countdown {
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+  }
+  .timer-box {
+    background:#fff;
+    color:#000;
+    font-size:5rem;
+    font-weight:900;
+    padding:0.5em 1em;
+    border-radius:16px;
+    box-shadow:0 0 60px rgba(255,255,255,0.4);
+    letter-spacing:0.1em;
+    margin-bottom:1.5rem;
+  }
+  #timer {
+    display:flex;
+    justify-content:center;
+    align-items:baseline;
+    gap:2rem;
+    flex-wrap:nowrap;
+    margin:1.5rem 0;
+  }
+  #timer span.num {
+    background:#fff;
+    color:#000;
+    padding:0.4em 0.8em;
+    border-radius:12px;
+    min-width:110px;
+    box-shadow:0 0 30px rgba(255,255,255,0.5);
+    font-weight:900;
+    text-align:center;
+  }
+  #timer span.unit {
+    font-size:3.2rem;
+    color:#ccc;
+    font-weight:700;
+    margin-left:0.4em;
+  }
+  .coming {
+    font-size:3.5rem;
+    letter-spacing:0.4em;
+    opacity:0.9;
+    color:#ddd;
+  }
 
-    .preview-btn {
-      background: linear-gradient(135deg, #6e48aa, #9d50bb);
-      color: white;
-      font-size: 1.5rem;
-      font-weight: 700;
-      padding: 1rem 2.5rem;
-      border-radius: 50px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 8px 25px rgba(110, 72, 170, 0.5);
-      transition: all 0.3s ease;
-      letter-spacing: 0.15em;
-      margin-bottom: 2.5rem;
-    }
-    .preview-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 35px rgba(110, 72, 170, 0.7);
-    }
+  .preview-btn {
+    background: linear-gradient(135deg, #6e48aa, #9d50bb);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(110, 72, 170, 0.5);
+    transition: all 0.3s ease;
+    letter-spacing: 0.15em;
+    margin-bottom: 2.5rem;
+  }
+  .preview-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(110, 72, 170, 0.7);
+  }
 
-    .threads-wrapper {
-      text-align: center;
-    }
-    .threads-link {
-      display: inline-block;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-    .threads-link:hover {
-      transform: scale(1.08);
-      filter: brightness(1.15);
-    }
-    .threads-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      box-shadow: 0 4px 15px rgba(255,255,255,0.3);
-      margin-bottom: 0.8rem;
-    }
-    .threads-text {
-      display: block;
-      background: rgba(0,0,0,0.7);
-      color: #fff;
-      font-size: 1.2rem;
-      padding: 0.6rem 1.2rem;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.15);
-      letter-spacing: 0.1em;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    }
+  .threads-wrapper {
+    text-align: center;
+  }
+  .threads-link {
+    display: inline-block;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  .threads-link:hover {
+    transform: scale(1.08);
+    filter: brightness(1.15);
+  }
+  .threads-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(255,255,255,0.3);
+    margin-bottom: 0.8rem;
+  }
+  .threads-text {
+    display: block;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    font-size: 1.2rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.15);
+    letter-spacing: 0.1em;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  }
 
+  .silhouettes {
+    padding:60px 5%;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:40px;
+  }
+  .silhouette {
+    width:100%;
+    max-width:420px;
+    aspect-ratio:3/5;
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center bottom;
+    filter:drop-shadow(0 0 20px rgba(255,255,255,0.3));
+    position:relative;
+  }
+  .silhouette::after {
+    content:'';
+    position:absolute;
+    bottom:-40px; left:50%;
+    width:80px; height:2px;
+    background:#fff;
+    transform:translateX(-50%);
+    opacity:0.6;
+  }
+  .silhouette:last-child::after { display:none; }
+
+  .s1 { background-image:url('https://i.imgur.com/69O6Wl8.png'); }
+  .s2 { background-image:url('https://i.imgur.com/q0ACMUn.jpeg'); }
+  .s3 { background-image:url('https://i.imgur.com/F3dMrKD.jpeg'); }
+  .s4 { background-image:url('https://i.imgur.com/ywTPgIi.jpeg'); }
+  .s5 { background-image:url('https://i.imgur.com/PlOzBF0.jpeg'); }
+
+  /* 電腦版斜線切割 */
+  @media (min-width:901px) {
     .silhouettes {
-      padding:60px 5%;
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      gap:40px;
+      padding:80px 5%;
+      gap:0;
+      flex-wrap:nowrap;
     }
     .silhouette {
-      width:100%;
-      max-width:420px;
+      flex:1;
       aspect-ratio:3/5;
-      background-size:contain;
-      background-repeat:no-repeat;
-      background-position:center bottom;
-      filter:drop-shadow(0 0 20px rgba(255,255,255,0.3));
-      position:relative;
+      clip-path:polygon(0 0, 100% 0, 80% 100%, 20% 100%);
+      max-width:none;
     }
-    .silhouette::after {
+    .silhouette:not(:last-child)::after {
       content:'';
       position:absolute;
-      bottom:-40px; left:50%;
-      width:80px; height:2px;
+      top:0; right:-2px;
+      width:4px; height:100%;
       background:#fff;
-      transform:translateX(-50%);
-      opacity:0.6;
+      transform:skewX(-15deg);
+      z-index:3;
     }
-    .silhouette:last-child::after { display:none; }
+    .silhouette::after { display:none; }
+  }
 
-    .s1 { background-image:url('https://i.imgur.com/69O6Wl8.png'); }
-    .s2 { background-image:url('https://i.imgur.com/q0ACMUn.jpeg'); }
-    .s3 { background-image:url('https://i.imgur.com/F3dMrKD.jpeg'); }
-    .s4 { background-image:url('https://i.imgur.com/ywTPgIi.jpeg'); }
-    .s5 { background-image:url('https://i.imgur.com/PlOzBF0.jpeg'); }
-
-    /* 電腦版斜線切割 */
-    @media (min-width:901px) {
-      .silhouettes {
-        padding:80px 5%;
-        gap:0;
-        flex-wrap:nowrap;
-      }
-      .silhouette {
-        flex:1;
-        aspect-ratio:3/5;
-        clip-path:polygon(0 0, 100% 0, 80% 100%, 20% 100%);
-        max-width:none;
-      }
-      .silhouette:not(:last-child)::after {
-        content:'';
-        position:absolute;
-        top:0; right:-2px;
-        width:4px; height:100%;
-        background:#fff;
-        transform:skewX(-15deg);
-        z-index:3;
-      }
-      .silhouette::after { display:none; }
+  /* 手機版：調整框大小適合 iPhone 平均螢幕 (375-430px) */
+  @media (max-width:900px) {
+    .timer-box {
+      padding: 1rem 1.2rem;
+      border-radius: 16px;
+      max-width: 340px;          /* 適合 iPhone 主流寬度，留邊距 */
+      width: 88vw;               /* 動態調整 */
     }
-
-    /* 手機版：白底大框 + 兩行排列（D H / M S） */
-    @media (max-width:900px) {
-      .timer-box {
-        padding: 1.5rem 2rem;
-        border-radius: 20px;
-      }
-      #timer {
-        flex-direction: column;
-        gap: 1.2rem;
-      }
-      .timer-row {
-        display: flex;
-        justify-content: center;
-        align-items: baseline;
-        gap: 2.5rem; /* 加大間距讓數字與單位分開好看 */
-      }
-      #timer span.num {
-        padding: 0.4em 0.8em;
-        min-width: 90px;
-        font-size: 3.2rem;
-        border-radius: 12px;
-      }
-      #timer span.unit {
-        font-size: 2.2rem;
-        margin-left: 0.5em;
-      }
-      .coming {
-        font-size: 2.5rem;
-        letter-spacing: 0.2em;
-      }
-      .preview-btn {
-        font-size: 1.3rem;
-        padding: 0.9rem 2rem;
-        margin-bottom: 2rem;
-      }
-      .threads-icon {
-        width: 56px;
-        height: 56px;
-      }
-      .threads-text {
-        font-size: 1rem;
-        padding: 0.5rem 1rem;
-      }
-      .silhouettes {
-        padding:40px 10%; gap:80px;
-      }
+    #timer {
+      flex-direction: column;
+      gap: 0.9rem;
     }
-  </style>
+    .timer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1.8rem;
+    }
+    #timer span.num {
+      padding: 0.4em 0.6em;
+      min-width: 70px;
+      font-size: clamp(2.2rem, 7.5vw, 2.8rem);
+      border-radius: 10px;
+    }
+    #timer span.unit {
+      font-size: clamp(1.3rem, 4.5vw, 1.9rem);
+      margin-left: 0.4em;
+      color: #444;
+    }
+    .coming {
+      font-size: clamp(2rem, 6.5vw, 2.6rem);
+      letter-spacing: 0.18em;
+      margin-bottom: 1.5rem;
+    }
+    .preview-btn {
+      font-size: 1.2rem;
+      padding: 0.8rem 2rem;
+      margin-bottom: 1.8rem;
+    }
+    .threads-icon {
+      width: 50px;
+      height: 50px;
+    }
+    .threads-text {
+      font-size: 0.95rem;
+      padding: 0.5rem 1rem;
+    }
+    .silhouettes {
+      padding: 40px 8%;
+      gap: 70px;
+    }
+  }
+</style>
 </head>
 <body>
 
