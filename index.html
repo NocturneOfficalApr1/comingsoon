@@ -186,56 +186,55 @@
     .silhouette::after { display:none; }
   }
 
-  /* 手機版：只調整這裡，讓數字與單位乖乖並排 */
+  /* 手機版：恢復較大白框 + 調整對齊（D/M 靠左一點，H/S 有空間） */
   @media (max-width:900px) {
     .timer-box {
-      padding: 1.2rem 1.5rem;
-      border-radius: 16px;
-      max-width: 340px;
-      width: 88vw;
+      padding: 1.25rem 1.6rem;
+      border-radius: 18px;
+      max-width: 380px;      /* 恢復原本較大的白框 */
+      width: 92vw;
     }
     #timer {
       flex-direction: column;
-      gap: 1.1rem;
+      gap: 1.05rem;
     }
     .timer-row {
       display: flex;
-      justify-content: center;
+      justify-content: space-around;   /* 讓兩組左右平衡 */
       align-items: baseline;
-      gap: 2.2rem; /* 兩組之間間距 */
+      gap: 2.2rem;
     }
     .timer-row > span {
       display: inline-flex;
       align-items: baseline;
-      gap: 0.6rem; /* 數字與單位之間的間距 */
+      gap: 0.5rem;   /* 數字與單位緊密黏在一起 */
     }
     #timer span.num {
-      padding: 0.4em 0.7em;
-      min-width: 75px;
-      font-size: clamp(2.4rem, 8vw, 3rem);
-      border-radius: 10px;
+      padding: 0.45em 0.75em;
+      min-width: 78px;
+      font-size: clamp(2.45rem, 8.2vw, 3.1rem);
+      border-radius: 11px;
     }
     #timer span.unit {
-      font-size: clamp(1.4rem, 5vw, 2rem);
+      font-size: clamp(1.45rem, 5vw, 2.1rem);
       color: #444;
       font-weight: 700;
     }
     .coming {
-      font-size: clamp(2.2rem, 7vw, 2.8rem);
-      letter-spacing: 0.18em;
-      margin-bottom: 1.5rem;
+      font-size: clamp(2.1rem, 7vw, 2.7rem);
+      letter-spacing: 0.2em;
     }
     .preview-btn {
       font-size: 1.25rem;
-      padding: 0.9rem 2.2rem;
+      padding: 0.85rem 2.1rem;
       margin-bottom: 1.8rem;
     }
     .threads-icon {
-      width: 54px;
-      height: 54px;
+      width: 52px;
+      height: 52px;
     }
     .threads-text {
-      font-size: 0.98rem;
+      font-size: 0.97rem;
       padding: 0.5rem 1rem;
     }
     .silhouettes {
