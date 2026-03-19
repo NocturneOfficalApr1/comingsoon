@@ -186,51 +186,56 @@
     .silhouette::after { display:none; }
   }
 
-  /* 手機版：調整框大小適合 iPhone 平均螢幕 (375-430px) */
+  /* 手機版：只調整這裡，讓數字與單位乖乖並排 */
   @media (max-width:900px) {
     .timer-box {
-      padding: 1rem 1.2rem;
+      padding: 1.2rem 1.5rem;
       border-radius: 16px;
-      max-width: 340px;          /* 適合 iPhone 主流寬度，留邊距 */
-      width: 88vw;               /* 動態調整 */
+      max-width: 340px;
+      width: 88vw;
     }
     #timer {
       flex-direction: column;
-      gap: 0.9rem;
+      gap: 1.1rem;
     }
     .timer-row {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: baseline;
-      gap: 1.8rem;
+      gap: 2.2rem; /* 兩組之間間距 */
+    }
+    .timer-row > span {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.6rem; /* 數字與單位之間的間距 */
     }
     #timer span.num {
-      padding: 0.4em 0.6em;
-      min-width: 70px;
-      font-size: clamp(2.2rem, 7.5vw, 2.8rem);
+      padding: 0.4em 0.7em;
+      min-width: 75px;
+      font-size: clamp(2.4rem, 8vw, 3rem);
       border-radius: 10px;
     }
     #timer span.unit {
-      font-size: clamp(1.3rem, 4.5vw, 1.9rem);
-      margin-left: 0.4em;
+      font-size: clamp(1.4rem, 5vw, 2rem);
       color: #444;
+      font-weight: 700;
     }
     .coming {
-      font-size: clamp(2rem, 6.5vw, 2.6rem);
+      font-size: clamp(2.2rem, 7vw, 2.8rem);
       letter-spacing: 0.18em;
       margin-bottom: 1.5rem;
     }
     .preview-btn {
-      font-size: 1.2rem;
-      padding: 0.8rem 2rem;
+      font-size: 1.25rem;
+      padding: 0.9rem 2.2rem;
       margin-bottom: 1.8rem;
     }
     .threads-icon {
-      width: 50px;
-      height: 50px;
+      width: 54px;
+      height: 54px;
     }
     .threads-text {
-      font-size: 0.95rem;
+      font-size: 0.98rem;
       padding: 0.5rem 1rem;
     }
     .silhouettes {
