@@ -7,245 +7,203 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
-<style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    background:#000;
-    color:#fff;
-    font-family:'Orbitron', sans-serif;
-    overflow-x:hidden;
-    position:relative;
-    min-height:100vh;
-  }
-  canvas#bg {
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    pointer-events:none;
-    z-index:1;
-  }
-  main { position:relative; z-index:2; }
-
-  .countdown {
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    padding:20px;
-  }
-  .timer-box {
-    /* 移除白底，只保留陰影讓文字有立體感 */
-    background: transparent;
-    color:#fff;
-    font-size:5rem;
-    font-weight:900;
-    padding:0.5em 1em;
-    border-radius:16px;
-    box-shadow:0 0 60px rgba(255,255,255,0.4);
-    letter-spacing:0.1em;
-    margin-bottom:1.5rem;
-  }
-  #timer {
-    display:flex;
-    justify-content:center;
-    align-items:baseline;
-    gap:2rem;
-    flex-wrap:nowrap;
-    margin:1.5rem 0;
-  }
-  #timer span.num {
-    background: transparent;  /* 數字也去掉白底 */
-    color:#fff;               /* 改成白字 */
-    padding:0.4em 0.8em;
-    border-radius:12px;
-    min-width:110px;
-    box-shadow:none;          /* 移除小框陰影 */
-    font-weight:900;
-    text-align:center;
-  }
-  #timer span.unit {
-    font-size:3.2rem;
-    color:#ccc;
-    font-weight:700;
-    margin-left:0.4em;
-  }
-  .coming {
-    font-size:3.5rem;
-    letter-spacing:0.4em;
-    opacity:0.9;
-    color:#ddd;
-  }
-
-  .preview-btn {
-    background: linear-gradient(135deg, #6e48aa, #9d50bb);
-    color: white;
-    font-size: 1.5rem;
-    font-weight: 700;
-    padding: 1rem 2.5rem;
-    border-radius: 50px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 8px 25px rgba(110, 72, 170, 0.5);
-    transition: all 0.3s ease;
-    letter-spacing: 0.15em;
-    margin-bottom: 2.5rem;
-  }
-  .preview-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(110, 72, 170, 0.7);
-  }
-
-  .threads-wrapper {
-    text-align: center;
-  }
-  .threads-link {
-    display: inline-block;
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-  .threads-link:hover {
-    transform: scale(1.08);
-    filter: brightness(1.15);
-  }
-  .threads-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    box-shadow: 0 4px 15px rgba(255,255,255,0.3);
-    margin-bottom: 0.8rem;
-  }
-  .threads-text {
-    display: block;
-    background: rgba(0,0,0,0.7);
-    color: #fff;
-    font-size: 1.2rem;
-    padding: 0.6rem 1.2rem;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.15);
-    letter-spacing: 0.1em;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-  }
-
-  .silhouettes {
-    padding:60px 5%;
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:40px;
-  }
-  .silhouette {
-    width:100%;
-    max-width:420px;
-    aspect-ratio:3/5;
-    background-size:contain;
-    background-repeat:no-repeat;
-    background-position:center bottom;
-    filter:drop-shadow(0 0 20px rgba(255,255,255,0.3));
-    position:relative;
-  }
-  .silhouette::after {
-    content:'';
-    position:absolute;
-    bottom:-40px; left:50%;
-    width:80px; height:2px;
-    background:#fff;
-    transform:translateX(-50%);
-    opacity:0.6;
-  }
-  .silhouette:last-child::after { display:none; }
-
-  .s1 { background-image:url('https://i.imgur.com/69O6Wl8.png'); }
-  .s2 { background-image:url('https://i.imgur.com/q0ACMUn.jpeg'); }
-  .s3 { background-image:url('https://i.imgur.com/F3dMrKD.jpeg'); }
-  .s4 { background-image:url('https://i.imgur.com/ywTPgIi.jpeg'); }
-  .s5 { background-image:url('https://i.imgur.com/PlOzBF0.jpeg'); }
-
-  /* 電腦版斜線切割 */
-  @media (min-width:901px) {
-    .silhouettes {
-      padding:80px 5%;
-      gap:0;
-      flex-wrap:nowrap;
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background:#000;
+      color:#fff;
+      font-family:'Orbitron', sans-serif;
+      overflow-x:hidden;
+      position:relative;
+      min-height:100vh;
     }
-    .silhouette {
-      flex:1;
-      aspect-ratio:3/5;
-      clip-path:polygon(0 0, 100% 0, 80% 100%, 20% 100%);
-      max-width:none;
+    canvas#bg {
+      position:fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      pointer-events:none;
+      z-index:1;
     }
-    .silhouette:not(:last-child)::after {
-      content:'';
-      position:absolute;
-      top:0; right:-2px;
-      width:4px; height:100%;
-      background:#fff;
-      transform:skewX(-15deg);
-      z-index:3;
-    }
-    .silhouette::after { display:none; }
-  }
+    main { position:relative; z-index:2; }
 
-  /* 手機版：維持兩行，但數字單位都白字無底 */
-  @media (max-width:900px) {
+    .countdown {
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding:20px;
+    }
     .timer-box {
-      padding: 1.4rem 2.2rem;
-      border-radius: 18px;
-      max-width: 400px;
-      width: 92vw;
-      background: transparent; /* 確保手機版也無白底 */
+      background:#fff;
+      color:#000;
+      font-size:5rem;
+      font-weight:900;
+      padding:0.5em 1em;
+      border-radius:16px;
+      box-shadow:0 0 60px rgba(255,255,255,0.4);
+      letter-spacing:0.1em;
+      margin-bottom:1.5rem;
     }
     #timer {
-      flex-direction: column;
-      gap: 1.1rem;
-    }
-    .timer-row {
-      display: flex;
-      justify-content: center;
-      align-items: baseline;
-      gap: 2.2rem;
-    }
-    .timer-row > span {
-      display: inline-flex;
-      align-items: baseline;
-      gap: 0.45rem;
+      font-size:4.2rem;
+      display:flex;
+      justify-content:center;
+      align-items:baseline;
+      gap:2rem;
+      flex-wrap:nowrap;
+      margin:1.5rem 0;
     }
     #timer span.num {
-      background: transparent;
-      color: #fff;
-      padding: 0.4em 0.75em;
-      min-width: 85px;
-      font-size: clamp(2.35rem, 7.8vw, 2.9rem);
-      border-radius: 10px;
+      background:#fff;
+      color:#000;
+      padding:0.4em 0.8em;
+      border-radius:12px;
+      min-width:110px;
+      box-shadow:0 0 30px rgba(255,255,255,0.5);
+      font-weight:900;
+      text-align:center;
     }
     #timer span.unit {
-      font-size: clamp(1.4rem, 4.8vw, 2rem);
-      color: #ccc;
+      font-size:3.2rem;
+      color:#ccc;
+      font-weight:700;
+      margin-left:0.4em;
     }
     .coming {
-      font-size: clamp(2.1rem, 7vw, 2.7rem);
-      letter-spacing: 0.2em;
+      font-size:3.5rem;
+      letter-spacing:0.4em;
+      opacity:0.9;
+      color:#ddd;
+      margin-bottom: 2rem;
     }
+
+    /* 成員預告按鈕 */
     .preview-btn {
-      font-size: 1.25rem;
-      padding: 0.85rem 2.1rem;
-      margin-bottom: 1.8rem;
+      background: linear-gradient(135deg, #6e48aa, #9d50bb);
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(110, 72, 170, 0.5);
+      transition: all 0.3s ease;
+      letter-spacing: 0.15em;
+      margin-bottom: 2.5rem;
+    }
+    .preview-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(110, 72, 170, 0.7);
+    }
+
+    /* Threads 區塊 */
+    .threads-wrapper {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .threads-link {
+      display: inline-block;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .threads-link:hover {
+      transform: scale(1.08);
+      filter: brightness(1.15);
     }
     .threads-icon {
-      width: 52px;
-      height: 52px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      box-shadow: 0 4px 15px rgba(255,255,255,0.3);
+      margin-bottom: 0.8rem;
     }
     .threads-text {
-      font-size: 0.97rem;
-      padding: 0.5rem 1rem;
+      display: block;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      font-size: 1.2rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.15);
+      letter-spacing: 0.1em;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
+
     .silhouettes {
-      padding: 40px 8%;
-      gap: 70px;
+      padding:60px 5%;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:40px;
     }
-  }
-</style>
+    .silhouette {
+      width:100%;
+      max-width:420px;
+      aspect-ratio:3/5;
+      background-size:contain;
+      background-repeat:no-repeat;
+      background-position:center bottom;
+      filter:drop-shadow(0 0 20px rgba(255,255,255,0.3));
+      position:relative;
+    }
+    .silhouette::after {
+      content:'';
+      position:absolute;
+      bottom:-40px; left:50%;
+      width:80px; height:2px;
+      background:#fff;
+      transform:translateX(-50%);
+      opacity:0.6;
+    }
+    .silhouette:last-child::after { display:none; }
+
+    .s1 { background-image:url('https://i.imgur.com/69O6Wl8.png'); }
+    .s2 { background-image:url('https://i.imgur.com/q0ACMUn.jpeg'); }
+    .s3 { background-image:url('https://i.imgur.com/F3dMrKD.jpeg'); }
+    .s4 { background-image:url('https://i.imgur.com/ywTPgIi.jpeg'); }
+    .s5 { background-image:url('https://i.imgur.com/PlOzBF0.jpeg'); }
+
+    /* 電腦版斜線切割 */
+    @media (min-width:901px) {
+      .silhouettes {
+        padding:80px 5%;
+        gap:0;
+        flex-wrap:nowrap;
+      }
+      .silhouette {
+        flex:1;
+        aspect-ratio:3/5;
+        clip-path:polygon(0 0, 100% 0, 80% 100%, 20% 100%);
+        max-width:none;
+      }
+      .silhouette:not(:last-child)::after {
+        content:'';
+        position:absolute;
+        top:0; right:-2px;
+        width:4px; height:100%;
+        background:#fff;
+        transform:skewX(-15deg);
+        z-index:3;
+      }
+      .silhouette::after { display:none; }
+    }
+
+    /* 手機版優化 */
+    @media (max-width:900px) {
+      .timer-box { font-size:3.2rem; padding:0.4em 0.8em; }
+      #timer { font-size:2.8rem; gap:1.2rem; }
+      #timer span.num { min-width:80px; padding:0.3em 0.6em; }
+      #timer span.unit { font-size:2.2rem; }
+      .coming { font-size:2.5rem; letter-spacing:0.2em; }
+      .preview-btn { font-size:1.3rem; padding:0.9rem 2rem; margin-bottom: 2rem; }
+      .threads-icon { width: 56px; height: 56px; }
+      .threads-text { font-size: 1rem; padding: 0.5rem 1rem; }
+      .silhouettes { padding:40px 10%; gap:80px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -284,38 +242,27 @@ const target = new Date("2026-04-01T20:00:00+08:00").getTime();
 
 function updateTimer() {
   const dist = target - Date.now();
-  
-  let d = '00', h = '00', m = '00', s = '00';
-  if (dist > 0) {
-    d = Math.floor(dist / 86400000).toString().padStart(2, '0');
-    h = Math.floor((dist % 86400000) / 3600000).toString().padStart(2, '0');
-    m = Math.floor((dist % 3600000) / 60000).toString().padStart(2, '0');
-    s = Math.floor((dist % 60000) / 1000).toString().padStart(2, '0');
-  }
-
-  const timerEl = document.getElementById("timer");
-
-  if (window.innerWidth <= 900) {
-    // 手機版：兩行
-    timerEl.innerHTML = `
-      <div class="timer-row">
-        <span class="num">${d}</span><span class="unit">D</span>
-        <span class="num">${h}</span><span class="unit">H</span>
-      </div>
-      <div class="timer-row">
-        <span class="num">${m}</span><span class="unit">M</span>
-        <span class="num">${s}</span><span class="unit">S</span>
-      </div>
+  let html = '';
+  if (dist <= 0) {
+    html = `
+      <span class="num">00</span><span class="unit">D</span>
+      <span class="num">00</span><span class="unit">H</span>
+      <span class="num">00</span><span class="unit">M</span>
+      <span class="num">00</span><span class="unit">S</span>
     `;
   } else {
-    // 電腦版：單行（完全不變）
-    timerEl.innerHTML = `
+    const d = Math.floor(dist / 86400000).toString().padStart(2, '0');
+    const h = Math.floor((dist % 86400000) / 3600000).toString().padStart(2, '0');
+    const m = Math.floor((dist % 3600000) / 60000).toString().padStart(2, '0');
+    const s = Math.floor((dist % 60000) / 1000).toString().padStart(2, '0');
+    html = `
       <span class="num">${d}</span><span class="unit">D</span>
       <span class="num">${h}</span><span class="unit">H</span>
       <span class="num">${m}</span><span class="unit">M</span>
       <span class="num">${s}</span><span class="unit">S</span>
     `;
   }
+  document.getElementById("timer").innerHTML = html;
 }
 setInterval(updateTimer, 1000);
 updateTimer();
@@ -329,7 +276,6 @@ c.height = window.innerHeight;
 window.addEventListener('resize', () => {
   c.width = window.innerWidth;
   c.height = window.innerHeight;
-  updateTimer();
 });
 
 const stars = [];
