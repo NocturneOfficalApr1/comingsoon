@@ -47,7 +47,6 @@
       margin-bottom:1.5rem;
     }
     #timer {
-      font-size:4.2rem;
       display:flex;
       justify-content:center;
       align-items:baseline;
@@ -76,10 +75,8 @@
       letter-spacing:0.4em;
       opacity:0.9;
       color:#ddd;
-      margin-bottom: 2rem;
     }
 
-    /* 成員預告按鈕 */
     .preview-btn {
       background: linear-gradient(135deg, #6e48aa, #9d50bb);
       color: white;
@@ -99,9 +96,7 @@
       box-shadow: 0 12px 35px rgba(110, 72, 170, 0.7);
     }
 
-    /* Threads 區塊 */
     .threads-wrapper {
-      margin-top: 1rem;
       text-align: center;
     }
     .threads-link {
@@ -191,17 +186,52 @@
       .silhouette::after { display:none; }
     }
 
-    /* 手機版優化 */
+    /* 手機版：白底大框 + 兩行排列（D H / M S） */
     @media (max-width:900px) {
-      .timer-box { font-size:3.2rem; padding:0.4em 0.8em; }
-      #timer { font-size:2.8rem; gap:1.2rem; }
-      #timer span.num { min-width:80px; padding:0.3em 0.6em; }
-      #timer span.unit { font-size:2.2rem; }
-      .coming { font-size:2.5rem; letter-spacing:0.2em; }
-      .preview-btn { font-size:1.3rem; padding:0.9rem 2rem; margin-bottom: 2rem; }
-      .threads-icon { width: 56px; height: 56px; }
-      .threads-text { font-size: 1rem; padding: 0.5rem 1rem; }
-      .silhouettes { padding:40px 10%; gap:80px; }
+      .timer-box {
+        padding: 1.5rem 2rem;
+        border-radius: 20px;
+      }
+      #timer {
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+      .timer-row {
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        gap: 2.5rem; /* 加大間距讓數字與單位分開好看 */
+      }
+      #timer span.num {
+        padding: 0.4em 0.8em;
+        min-width: 90px;
+        font-size: 3.2rem;
+        border-radius: 12px;
+      }
+      #timer span.unit {
+        font-size: 2.2rem;
+        margin-left: 0.5em;
+      }
+      .coming {
+        font-size: 2.5rem;
+        letter-spacing: 0.2em;
+      }
+      .preview-btn {
+        font-size: 1.3rem;
+        padding: 0.9rem 2rem;
+        margin-bottom: 2rem;
+      }
+      .threads-icon {
+        width: 56px;
+        height: 56px;
+      }
+      .threads-text {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+      }
+      .silhouettes {
+        padding:40px 10%; gap:80px;
+      }
     }
   </style>
 </head>
@@ -242,27 +272,38 @@ const target = new Date("2026-04-01T20:00:00+08:00").getTime();
 
 function updateTimer() {
   const dist = target - Date.now();
-  let html = '';
-  if (dist <= 0) {
-    html = `
-      <span class="num">00</span><span class="unit">D</span>
-      <span class="num">00</span><span class="unit">H</span>
-      <span class="num">00</span><span class="unit">M</span>
-      <span class="num">00</span><span class="unit">S</span>
+  
+  let d = '00', h = '00', m = '00', s = '00';
+  if (dist > 0) {
+    d = Math.floor(dist / 86400000).toString().padStart(2, '0');
+    h = Math.floor((dist % 86400000) / 3600000).toString().padStart(2, '0');
+    m = Math.floor((dist % 3600000) / 60000).toString().padStart(2, '0');
+    s = Math.floor((dist % 60000) / 1000).toString().padStart(2, '0');
+  }
+
+  const timerEl = document.getElementById("timer");
+
+  if (window.innerWidth <= 900) {
+    // 手機版：兩行
+    timerEl.innerHTML = `
+      <div class="timer-row">
+        <span class="num">${d}</span><span class="unit">D</span>
+        <span class="num">${h}</span><span class="unit">H</span>
+      </div>
+      <div class="timer-row">
+        <span class="num">${m}</span><span class="unit">M</span>
+        <span class="num">${s}</span><span class="unit">S</span>
+      </div>
     `;
   } else {
-    const d = Math.floor(dist / 86400000).toString().padStart(2, '0');
-    const h = Math.floor((dist % 86400000) / 3600000).toString().padStart(2, '0');
-    const m = Math.floor((dist % 3600000) / 60000).toString().padStart(2, '0');
-    const s = Math.floor((dist % 60000) / 1000).toString().padStart(2, '0');
-    html = `
+    // 電腦版：單行（完全不變）
+    timerEl.innerHTML = `
       <span class="num">${d}</span><span class="unit">D</span>
       <span class="num">${h}</span><span class="unit">H</span>
       <span class="num">${m}</span><span class="unit">M</span>
       <span class="num">${s}</span><span class="unit">S</span>
     `;
   }
-  document.getElementById("timer").innerHTML = html;
 }
 setInterval(updateTimer, 1000);
 updateTimer();
@@ -276,6 +317,7 @@ c.height = window.innerHeight;
 window.addEventListener('resize', () => {
   c.width = window.innerWidth;
   c.height = window.innerHeight;
+  updateTimer();
 });
 
 const stars = [];
