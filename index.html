@@ -40,11 +40,13 @@
     color:#000;
     font-size:5rem;
     font-weight:900;
-    padding:0.5em 1em;
-    border-radius:16px;
+    padding:1.4rem 2rem;
+    border-radius:18px;
     box-shadow:0 0 60px rgba(255,255,255,0.4);
     letter-spacing:0.1em;
     margin-bottom:1.5rem;
+    max-width: 380px;
+    width: 92vw;
   }
   #timer {
     display:flex;
@@ -186,40 +188,38 @@
     .silhouette::after { display:none; }
   }
 
-  /* 手機版：數字整體縮小 + 單位更貼近 + 固定寬度（解決秒數跳動問題） */
+  /* 手機版：完整大白框 + 兩行緊貼排列（H 和 S 絕對不會跑出去） */
   @media (max-width:900px) {
     .timer-box {
-      padding: 1.25rem 1.6rem;
+      padding: 1.35rem 2rem;
       border-radius: 18px;
       max-width: 380px;
       width: 92vw;
     }
     #timer {
       flex-direction: column;
-      gap: 1.05rem;
+      gap: 1.1rem;
     }
     .timer-row {
       display: flex;
       justify-content: center;
       align-items: baseline;
-      gap: 2.2rem;
+      gap: 2rem;
     }
     .timer-row > span {
       display: inline-flex;
       align-items: baseline;
-      gap: 0.35rem;   /* 單位更貼近數字 */
+      gap: 0.45rem;   /* 數字與單位超貼近 */
     }
     #timer span.num {
-      padding: 0.4em 0.7em;
-      min-width: 88px;          /* 固定寬度，秒數變化時不再跳動 */
-      font-size: clamp(2.3rem, 7.6vw, 2.85rem); /* 數字整體再縮小 */
+      padding: 0.4em 0.75em;
+      min-width: 85px;
+      font-size: clamp(2.35rem, 7.8vw, 2.9rem);
       border-radius: 10px;
-      text-align: center;
     }
     #timer span.unit {
-      font-size: clamp(1.35rem, 4.8vw, 2rem);
+      font-size: clamp(1.4rem, 4.8vw, 2rem);
       color: #444;
-      font-weight: 700;
     }
     .coming {
       font-size: clamp(2.1rem, 7vw, 2.7rem);
