@@ -36,17 +36,16 @@
     padding:20px;
   }
   .timer-box {
-    background:#fff;
-    color:#000;
+    /* 移除白底，只保留陰影讓文字有立體感 */
+    background: transparent;
+    color:#fff;
     font-size:5rem;
     font-weight:900;
-    padding:1.4rem 2rem;
-    border-radius:18px;
+    padding:0.5em 1em;
+    border-radius:16px;
     box-shadow:0 0 60px rgba(255,255,255,0.4);
     letter-spacing:0.1em;
     margin-bottom:1.5rem;
-    max-width: 380px;
-    width: 92vw;
   }
   #timer {
     display:flex;
@@ -57,12 +56,12 @@
     margin:1.5rem 0;
   }
   #timer span.num {
-    background:#fff;
-    color:#000;
+    background: transparent;  /* 數字也去掉白底 */
+    color:#fff;               /* 改成白字 */
     padding:0.4em 0.8em;
     border-radius:12px;
     min-width:110px;
-    box-shadow:0 0 30px rgba(255,255,255,0.5);
+    box-shadow:none;          /* 移除小框陰影 */
     font-weight:900;
     text-align:center;
   }
@@ -188,13 +187,14 @@
     .silhouette::after { display:none; }
   }
 
-  /* 手機版：完整大白框 + 兩行緊貼排列（H 和 S 絕對不會跑出去） */
+  /* 手機版：維持兩行，但數字單位都白字無底 */
   @media (max-width:900px) {
     .timer-box {
-      padding: 1.35rem 2rem;
+      padding: 1.4rem 2.2rem;
       border-radius: 18px;
-      max-width: 380px;
+      max-width: 400px;
       width: 92vw;
+      background: transparent; /* 確保手機版也無白底 */
     }
     #timer {
       flex-direction: column;
@@ -204,14 +204,16 @@
       display: flex;
       justify-content: center;
       align-items: baseline;
-      gap: 2rem;
+      gap: 2.2rem;
     }
     .timer-row > span {
       display: inline-flex;
       align-items: baseline;
-      gap: 0.45rem;   /* 數字與單位超貼近 */
+      gap: 0.45rem;
     }
     #timer span.num {
+      background: transparent;
+      color: #fff;
       padding: 0.4em 0.75em;
       min-width: 85px;
       font-size: clamp(2.35rem, 7.8vw, 2.9rem);
@@ -219,7 +221,7 @@
     }
     #timer span.unit {
       font-size: clamp(1.4rem, 4.8vw, 2rem);
-      color: #444;
+      color: #ccc;
     }
     .coming {
       font-size: clamp(2.1rem, 7vw, 2.7rem);
